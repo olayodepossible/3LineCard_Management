@@ -1,5 +1,5 @@
 package com.possible.backendtest.model;
 
 public class Address {
-    private
+    private int y;
 }
