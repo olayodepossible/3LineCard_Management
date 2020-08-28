@@ -24,7 +24,7 @@ public class CardVerificationServiceImpl implements CardVerificationService {
                 ResponseEntity<Card> responseEntity = new RestTemplate()
                         .getForEntity("https://lookup.binlist.net/{cardNumber}", Card.class, cardNumber);
                 Card response = responseEntity.getBody();
-//                assert response != null;
+                assert response != null;
                 Payload payload = new Payload(response.getScheme(), response.getType(), response.getBank().getName());
                 // update payload of number of hits
                 addNumberOfHits(cardNumber);
