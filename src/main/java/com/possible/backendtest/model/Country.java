@@ -11,11 +11,11 @@ public class Country {
 
     private String currency;
 
-    private String latitude;
+    private int latitude;
 
-    private String longitude;
+    private int longitude;
 
-    public String getNumeric() {
+/*    public String getNumeric() {
         return numeric;
     }
 
@@ -55,19 +55,19 @@ public class Country {
         this.currency = currency;
     }
 
-    public String getLatitude() {
+    public int getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(int latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public int getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(int longitude) {
         this.longitude = longitude;
-    }
+    }*/
 }

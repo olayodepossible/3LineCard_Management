@@ -1,61 +1,54 @@
 package com.possible.backendtest.model;
 
 public class Card {
-    private CardNumber cardNum;
-    private String cardScheme;
-    private String cardType;
-    private String cardBrand;
-    private boolean paymentPlan;
-    private Country address;
+    private Number number;
+    private String scheme;
+    private String type;
+    private String brand;
+    private boolean prepaid;
+    private Country country;
     private Bank bank;
 
-    public CardNumber getCardNum() {
-        return cardNum;
+
+    public String getScheme() {
+        return scheme;
     }
 
-    public void setCardNum(CardNumber cardNum) {
-        this.cardNum = cardNum;
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
     }
 
-    public String getCardScheme() {
-        return cardScheme;
+    public String getType() {
+        return type;
+    }
+/*
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public void setCardScheme(String cardScheme) {
-        this.cardScheme = cardScheme;
+    public String getBrand() {
+        return brand;
     }
 
-    public String getCardType() {
-        return cardType;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
+    public boolean isPrepaid() {
+        return prepaid;
     }
 
-    public String getCardBrand() {
-        return cardBrand;
+    public void setPrepaid(boolean prepaid) {
+        this.prepaid = prepaid;
+    }*/
+
+/*    public Country getCountry() {
+        return country;
     }
 
-    public void setCardBrand(String cardBrand) {
-        this.cardBrand = cardBrand;
-    }
-
-    public boolean isPaymentPlan() {
-        return paymentPlan;
-    }
-
-    public void setPaymentPlan(boolean paymentPlan) {
-        this.paymentPlan = paymentPlan;
-    }
-
-    public Country getAddress() {
-        return address;
-    }
-
-    public void setAddress(Country address) {
-        this.address = address;
-    }
+    public void setCountry(Country country) {
+        this.country = country;
+    }*/
 
     public Bank getBank() {
         return bank;

@@ -2,7 +2,7 @@ package com.possible.backendtest.service;
 
 import com.possible.backendtest.dto.CardResponseDto;
 import com.possible.backendtest.dto.HitCountDto;
-import com.possible.backendtest.dto.ResponsePayload;
+import com.possible.backendtest.dto.Payload;
 import com.possible.backendtest.exception.CustomException;
 import com.possible.backendtest.model.Card;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 @Service
-public class CardVerificationImpl implements CardVerificationService {
+public class CardVerificationServiceImpl implements CardVerificationService {
         private LinkedHashMap<String, Integer> countPayload = new LinkedHashMap<>();
 
     @Override
@@ -24,8 +24,8 @@ public class CardVerificationImpl implements CardVerificationService {
                 ResponseEntity<Card> responseEntity = new RestTemplate()
                         .getForEntity("https://lookup.binlist.net/{cardNumber}", Card.class, cardNumber);
                 Card response = responseEntity.getBody();
-                assert response != null;
-                ResponsePayload payload = new ResponsePayload(response.getCardScheme(), response.getCardType(), response.getBank().getBankName());
+//                assert response != null;
+                Payload payload = new Payload(response.getScheme(), response.getType(), response.getBank().getName());
                 // update payload of number of hits
                 addNumberOfHits(cardNumber);
                 return new CardResponseDto(true, payload);
