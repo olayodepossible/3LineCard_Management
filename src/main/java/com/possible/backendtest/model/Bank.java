@@ -5,6 +5,12 @@ public class Bank {
     private String bankLink;
     private BankContact bankContact;
 
+    public Bank(String bankName, String bankLink, BankContact bankContact) {
+        this.bankName = bankName;
+        this.bankLink = bankLink;
+        this.bankContact = bankContact;
+    }
+
     public String getBankName() {
         return bankName;
     }

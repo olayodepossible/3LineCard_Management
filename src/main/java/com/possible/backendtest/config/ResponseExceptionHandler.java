@@ -1,11 +1,15 @@
 package com.possible.backendtest.config;
 
 import com.possible.backendtest.api.ApiResponse;
+import com.possible.backendtest.exception.CustomException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -36,8 +40,7 @@ public class ResponseExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         @Override
-        protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex,
-                                                                              HttpHeaders headers, HttpStatus status, WebRequest request) {
+        protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
             String error = ex.getParameterName() + " parameter is missing";
             System.out.println(error);
             return buildResponseEntity(new ApiResponse<>(HttpStatus.BAD_REQUEST, error));

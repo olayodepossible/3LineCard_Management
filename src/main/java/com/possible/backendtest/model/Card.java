@@ -7,6 +7,7 @@ public class Card {
     private String cardBrand;
     private boolean paymentPlan;
     private Address address;
+    private Bank bank;
 
     public CardNumber getCardNum() {
         return cardNum;
@@ -54,5 +55,13 @@ public class Card {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
     }
 }

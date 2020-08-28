@@ -1,6 +1,9 @@
 package com.possible.backendtest.controller;
 
 import com.possible.backendtest.api.ApiResponse;
+import com.possible.backendtest.dto.CardResponseDto;
+import com.possible.backendtest.dto.HitCountDto;
+import com.possible.backendtest.service.CardVerificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +38,13 @@ public class CardVerificationController {
         }
 
         @GetMapping("/card-scheme/stats")
-        public ResponseEntity<ApiResponse<CountDto>> hitCount(@RequestParam(name = "start", defaultValue = "1") int start,
-                                                              @RequestParam(name = "limit", defaultValue = "1") int limit) {
-            CountDto response = cardVerificationService.countHit(start, limit);
-            ApiResponse<CountDto> api = new ApiResponse<>(HttpStatus.OK);
+        public ResponseEntity<ApiResponse<HitCountDto>> hitCount(@RequestParam(name = "start", defaultValue = "1") int start,
+                                                                 @RequestParam(name = "limit", defaultValue = "1") int limit) {
+            HitCountDto response = cardVerificationService.hitCount(start, limit);
+            ApiResponse<HitCountDto> api = new ApiResponse<>(HttpStatus.OK);
             api.setData(response);
             api.setMessage("Number of hits returned");
             return new ResponseEntity<>(api, api.getStatus());
         }
-    }
+
 }
