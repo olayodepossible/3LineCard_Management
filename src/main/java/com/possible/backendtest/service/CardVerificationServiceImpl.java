@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -26,7 +27,6 @@ public class CardVerificationServiceImpl implements CardVerificationService {
                 Card response = responseEntity.getBody();
                 assert response != null;
                 Payload payload = new Payload(response.getScheme(), response.getType(), response.getBank().getName());
-                // update payload of number of hits
                 addNumberOfHits(cardNumber);
                 return new CardResponseDto(true, payload);
             } catch (Exception e) {
@@ -42,7 +42,8 @@ public class CardVerificationServiceImpl implements CardVerificationService {
                 int count = countPayload.get(cardNumber) + 1;
                 countPayload.put(cardNumber, count);
             }
-
+        System.out.println(countPayload);
+        System.out.println(countPayload.size());
         }
 
 
@@ -56,23 +57,22 @@ public class CardVerificationServiceImpl implements CardVerificationService {
                     list.add(key);
                 }
 
-                if (start == 0) {
-                    start = 1;
-                } else if (start > countPayload.size()) {
-                    throw new CustomException("Start number way too high, please reduce start numbeer",
-                            HttpStatus.BAD_REQUEST);
+                 if (start > countPayload.size()) {
+                    throw new CustomException("Please reduce start number", HttpStatus.BAD_REQUEST);
                 }
 
-                int end;
-                if ((start + limit) > countPayload.size()) {
-                    end = countPayload.size() + 1;
-                } else {
-                    end = start + limit;
-                }
+                else {
+                     int end;
+                     if ((start + limit) > countPayload.size()) {
+                         end = countPayload.size() + 1;
+                     } else {
+                         end = start + limit;
+                     }
 
-                for (int i = start; i < end; i++) {
-                    payload.put(list.get(i - 1), countPayload.get(list.get(i - 1)));
-                }
+                     for (int i = start; i < end; i++) {
+                         payload.put(list.get(i - 1), countPayload.get(list.get(i - 1)));
+                     }
+                 }
             }
             return new HitCountDto(true, start, limit, countPayload.size(), payload);
         } catch (Exception e) {

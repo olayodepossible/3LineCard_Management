@@ -9,7 +9,6 @@ public class ApiResponse<T> {
     private HttpStatus status;
     private String message;
     private String error;
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
     private T data;
 

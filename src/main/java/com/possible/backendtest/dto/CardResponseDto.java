@@ -2,12 +2,13 @@ package com.possible.backendtest.dto;
 
 public class CardResponseDto {
     private boolean success;
-    private Payload payload;
+    private Payload response;
 
-    public CardResponseDto(boolean success, Payload payload) {
+    public CardResponseDto(boolean success, Payload response) {
         this.success = success;
-        this.payload = payload;
+        this.response = response;
     }
+
 
     public boolean isSuccess() {
         return success;
@@ -17,11 +18,11 @@ public class CardResponseDto {
         this.success = success;
     }
 
-    public Payload getPayload() {
-        return payload;
+    public Payload getResponse() {
+        return response;
     }
 
-    public void setPayload(Payload payload) {
-        this.payload = payload;
+    public void setResponse(Payload payload) {
+        this.response = payload;
     }
 }
