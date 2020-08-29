@@ -46,7 +46,8 @@ public class CardVerificationServiceImpl implements CardVerificationService {
     @Override
     public HitCountDto hitCount(int start, int limit) {
         try {
-            if(start > trackCardNumberHit.size()){
+            int paramsCheck = start + limit;
+            if(paramsCheck > trackCardNumberHit.size()){
                 throw new CustomException("Please reduce start number", HttpStatus.BAD_REQUEST);
             }
             else {
