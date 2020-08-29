@@ -1,5 +1,6 @@
 package com.possible.backendtest.unitTest;
 
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -7,17 +8,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 
 import com.possible.backendtest.controller.CardVerificationController;
+import com.possible.backendtest.dto.CardResponseDto;
+import com.possible.backendtest.dto.HitCountDto;
+import com.possible.backendtest.exception.CustomException;
 import com.possible.backendtest.service.CardVerificationService;
+import com.possible.backendtest.utils.TestModels;
+import com.possible.backendtest.utils.TestUtils;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -30,22 +32,48 @@ public class CardVerificationControllerTest {
         private CardVerificationService cardVerificationService;
 
         @Test
-        public void checkCardValidity() throws Exception {
-
+        public void shouldCheckCardValidity() throws Exception {
+            String cardNum = "5399831615410053";
             String path = "/card-scheme/verify/5399831615410053";
-            this.mockMvc.perform(get(path).contentType(MediaType.APPLICATION_JSON))
+            CardResponseDto newDto = TestModels.newCardResponseDto();
+            when(cardVerificationService.validate(cardNum)).thenReturn(newDto);
+            mockMvc.perform(get(path).contentType(MediaType.APPLICATION_JSON).content(TestUtils.asJsonString(newDto)))
                     .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.status", Is.is("OK")))
                     .andExpect(jsonPath("$.message", Is.is("Card is valid")));
         }
 
         @Test
-        public void numberOfHits() throws Exception {
+        public void shouldReturnBadRequestException() throws Exception {
+            String cardNum = "5089237797";
+            String path = "/card-scheme/verify/5089237797";
+            when(cardVerificationService.validate(cardNum)).thenThrow(new CustomException("Invalid Card Number", HttpStatus.BAD_REQUEST));
+            mockMvc.perform(get(path).contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest()).andExpect(jsonPath("$.status", Is.is("BAD_REQUEST")));
+        }
 
-            this.mockMvc
-                    .perform(get("/card-scheme/stats").param("page", "0").param("size", "1")
-                            .contentType(MediaType.APPLICATION_JSON))
-                    .andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.status", Is.is("OK")))
+        @Test
+        public void shouldReturnHitCount() throws Exception {
+            int start = 1;
+            int limit = 3;
+            String path = "/card-scheme/stats";
+
+            HitCountDto hitCountDto = TestModels.newHitCountDto();
+            when(cardVerificationService.hitCount(start, limit)).thenReturn(hitCountDto);
+            mockMvc.perform(get(path).param("start", "1").param("limit", "3")
+                    .contentType(MediaType.APPLICATION_JSON).content(TestUtils.asJsonString(hitCountDto)))
+                    .andDo(print()).andExpect(status().isOk())
+                    .andExpect(jsonPath("$.status", Is.is("OK")))
                     .andExpect(jsonPath("$.message", Is.is("Number of hits returned")));
+        }
+
+        @Test
+        public void shouldReturnBadRequest() throws Exception {
+            int start = 10;
+            int limit = 3;
+            String path = "/card-scheme/stats";
+            when(cardVerificationService.hitCount(start, limit)).thenThrow(new CustomException("Please reduce start number", HttpStatus.BAD_REQUEST));
+            mockMvc.perform(get(path).param("start", "10").param("limit", "3").contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest()).andExpect(jsonPath("$.error").value("Please reduce start number"));
         }
 
 }

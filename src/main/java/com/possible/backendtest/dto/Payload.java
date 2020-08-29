@@ -5,6 +5,7 @@ public class Payload {
     private String type;
     private String name;
 
+    public Payload(){}
     public Payload(String scheme, String type, String name) {
         this.scheme = scheme;
         this.type = type;

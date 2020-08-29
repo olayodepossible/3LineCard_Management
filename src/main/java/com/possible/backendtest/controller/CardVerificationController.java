@@ -41,7 +41,6 @@ public class CardVerificationController {
             HitCountDto response = cardVerificationService.hitCount(start, limit);
             ApiResponse<HitCountDto> api = new ApiResponse<>(HttpStatus.OK);
             api.setData(response);
-            System.out.println("This from Controller: "+ response.toString());
             api.setMessage("Number of hits returned");
             return new ResponseEntity<>(api, api.getStatus());
         }
