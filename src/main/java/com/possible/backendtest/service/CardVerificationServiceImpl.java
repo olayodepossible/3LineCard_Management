@@ -46,10 +46,10 @@ public class CardVerificationServiceImpl implements CardVerificationService {
     @Override
     public HitCountDto hitCount(int start, int limit) {
         try {
-            int paramsCheck = start + limit;
-            if(paramsCheck > trackCardNumberHit.size()){
+            if(start > trackCardNumberHit.size()){
                 throw new CustomException("Please reduce start number", HttpStatus.BAD_REQUEST);
             }
+
             else {
                 LinkedHashMap<String, Integer> payload = trackCardNumberHit.entrySet()
                         .stream()
